@@ -19,10 +19,17 @@ function setupRecognition(recognition) {
   recognition.onresult = function (event) {
     const { finalTranscript, interimTranscript } = processResult(event.results);
 
-    // ✅ Better alignment and readability
+    // ✅ Enhanced alignment + styling
     resultElement.innerHTML =
-      `<div style="text-align:left; line-height:1.6; white-space:pre-wrap; word-wrap:break-word;">
-        ${finalTranscript}<br><i style="color:gray;">${interimTranscript}</i>
+      `<div style="
+          text-align: left; 
+          font-size: 16px; 
+          line-height: 1.6; 
+          white-space: pre-wrap; 
+          word-wrap: break-word;
+        ">
+        ${finalTranscript}
+        <span style="color: gray; font-style: italic;">${interimTranscript}</span>
       </div>`;
   };
 
@@ -40,12 +47,12 @@ function processResult(results) {
   let interimTranscript = "";
 
   for (let i = 0; i < results.length; i++) {
-    let transcript = results[i][0].transcript;
+    let transcript = results[i][0].transcript.trim();
     transcript = transcript.replace(/\n/g, "<br>");
     if (results[i].isFinal) {
-      finalTranscript += transcript + " "; // space between sentences
+      finalTranscript += transcript + " "; // spacing for better readability
     } else {
-      interimTranscript += transcript;
+      interimTranscript += transcript + " ";
     }
   }
 
